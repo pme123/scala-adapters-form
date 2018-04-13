@@ -15,11 +15,7 @@ class BindableTest extends WordSpec with Matchers {
   "simple case class" should {
     "serialise and deserialise" in {
      // val testInstance = SimpleCaseClass(i = 42, s = "something")
-      val formData = SimpleCaseClassFormData(Var(55), Var("other"), Vars("elem1"))
-      println(s" generated class: $formData")
-      formData.i.value shouldBe 55
-      formData.list.value shouldBe Seq("elem1")
-      SimpleCaseClass.hello shouldBe "existing object"
+      """SimpleCaseClassFormData(Var(55), Var("other"), Vars("elem1"))""" should compile
     }
   }
 

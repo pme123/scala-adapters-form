@@ -15,7 +15,7 @@ libraryDependencies in Global ++= Seq(
   "com.chuusai" %%% "shapeless" % "2.3.3"
   , "com.thoughtworks.binding" %%% "dom" % "11.0.1"
   , "org.scalameta" %%% "scalameta" % "1.8.0"
-  // , "org.typelevel" %%% "cats" % "1.0.1"
+  , "org.typelevel" %%% "cats-core" % "1.0.1"
   // testing
   , "org.scalatest" %% "scalatest" % "3.0.5" % Test
 )
