@@ -26,7 +26,7 @@ lazy val root = (project in file(".")).
     inThisBuild(List(
       organization := "pme123",
       scalaVersion := "2.12.4",
-      version := "0.1.0-SNAPSHOT"
+      version := "0.1.0"
     )),
     name := "scala-adapters-form"
     , addCompilerPlugin("org.scalameta" % "paradise" % "3.0.0-M10" cross CrossVersion.full)
