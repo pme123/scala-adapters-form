@@ -15,6 +15,7 @@ object MapEncoder {
   def apply[A](implicit enc: MapEncoder[A]): MapEncoder[A] = enc
 
   // SAM does not work here!
+
   //noinspection ConvertExpressionToSAM
   def pure[A](func: A => MapValue): MapEncoder[A] =
     new MapEncoder[A] {
@@ -23,6 +24,7 @@ object MapEncoder {
     }
 
   // SAM does not work here!
+
   //noinspection ConvertExpressionToSAM
   def pureObject[A](func: A => MapObject): MapObjectEncoder[A] =
     new MapObjectEncoder[A] {
@@ -42,14 +44,14 @@ object MapEncoder {
 
   // few instance combinators
   implicit def listEncoder[A](implicit enc: MapEncoder[A]): MapEncoder[List[A]] =
-    pure(list => MapList(list.map(enc.encode)))
+    pure(list => MapList(list.map(enc.encode(_).asInstanceOf[SimpleValue[A]])))
 
   implicit def optionEncoder[A](implicit enc: MapEncoder[A]): MapEncoder[Option[A]] =
     pure(opt => opt.map(enc.encode).getOrElse(MapNull))
 
 
   implicit val hnilEncoder: MapObjectEncoder[HNil] =
-    pureObject(hnil => MapObject(Nil))
+    pureObject(_ => MapObject(Nil))
 
   import shapeless.labelled.FieldType
 

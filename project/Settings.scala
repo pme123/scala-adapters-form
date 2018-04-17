@@ -1,4 +1,3 @@
-import org.scalajs.sbtplugin.ScalaJSPlugin.AutoImport.jsDependencies
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import org.scalajs.sbtplugin.Stage
 import sbt.Keys.{resolvers, scalacOptions, _}

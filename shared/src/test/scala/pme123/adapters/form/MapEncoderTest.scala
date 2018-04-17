@@ -8,12 +8,16 @@ class MapEncoderTest extends UnitTest {
   "MapEncoder" should "create a Map from an IceCream" in {
     val iceCream = IceCream("hello", 12, inCone = true)
 
-    MapEncoder[IceCream].encode(iceCream) shouldBe
-      MapObject(List(
+    val mapValue = MapEncoder[IceCream].encode(iceCream)
+
+    mapValue.valueAsVar[String]("name").value shouldBe "hello"
+
+    mapValue shouldBe MapObject(List(
         ("name", MapString("hello"))
         , ("numCherries", MapInt(12))
         , ("inCone", MapBoolean(true))
       ))
+
   }
 
 }
