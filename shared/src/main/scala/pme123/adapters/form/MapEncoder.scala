@@ -1,5 +1,6 @@
 package pme123.adapters.form
 
+import com.thoughtworks.binding.Binding.{Var, Vars}
 import shapeless.{HList, HNil, Lazy, Witness, _}
 
 trait MapEncoder[A] {
@@ -15,6 +16,7 @@ object MapEncoder {
   def apply[A](implicit enc: MapEncoder[A]): MapEncoder[A] = enc
 
   // SAM does not work here!
+
   //noinspection ConvertExpressionToSAM
   def pure[A](func: A => MapValue): MapEncoder[A] =
     new MapEncoder[A] {
@@ -23,6 +25,7 @@ object MapEncoder {
     }
 
   // SAM does not work here!
+
   //noinspection ConvertExpressionToSAM
   def pureObject[A](func: A => MapObject): MapObjectEncoder[A] =
     new MapObjectEncoder[A] {
@@ -32,24 +35,24 @@ object MapEncoder {
 
   // primitive instances
   implicit val stringEncoder: MapEncoder[String] =
-    pure(str => MapString(str))
+    pure(str => MapString(Var(str)))
   implicit val doubleEncoder: MapEncoder[Double] =
-    pure(num => MapDouble(num))
+    pure(num => MapDouble(Var(num)))
   implicit val intEncoder: MapEncoder[Int] =
-    pure(num => MapInt(num))
+    pure(num => MapInt(Var(num)))
   implicit val booleanEncoder: MapEncoder[Boolean] =
-    pure(bool => MapBoolean(bool))
+    pure(bool => MapBoolean(Var(bool)))
 
   // few instance combinators
   implicit def listEncoder[A](implicit enc: MapEncoder[A]): MapEncoder[List[A]] =
-    pure(list => MapList(list.map(enc.encode)))
+    pure(list => MapList(Vars(list: _*)))
 
   implicit def optionEncoder[A](implicit enc: MapEncoder[A]): MapEncoder[Option[A]] =
     pure(opt => opt.map(enc.encode).getOrElse(MapNull))
 
 
   implicit val hnilEncoder: MapObjectEncoder[HNil] =
-    pureObject(hnil => MapObject(Nil))
+    pureObject(_ => MapObject(Map()))
 
   import shapeless.labelled.FieldType
 
@@ -61,9 +64,9 @@ object MapEncoder {
                                                              ): MapObjectEncoder[FieldType[K, H] :: T] = {
     val fieldName = witness.value.name
     pureObject { hlist =>
-      val head = hEncoder.value.encode(hlist.head)
-      val tail = tEncoder.encode(hlist.tail)
-      MapObject((fieldName, head) :: tail.fields)
+      val head: MapValue = hEncoder.value.encode(hlist.head)
+      val tail: MapObject = tEncoder.encode(hlist.tail)
+      MapObject(tail.fields + (fieldName -> head))
     }
   }
 
