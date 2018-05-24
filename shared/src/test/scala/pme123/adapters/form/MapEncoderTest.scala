@@ -10,10 +10,10 @@ class MapEncoderTest extends UnitTest {
 
     val mapValue = MapEncoder[IceCream].encode(iceCream)
 
-    mapValue.varValue[String]("name").value shouldBe "hello"
-    mapValue.varValue[Int]("numCherries").value shouldBe 12
-    mapValue.varValue[Boolean]("inCone").value shouldBe true
-    mapValue.varsValue[String]("flavours").value shouldBe Seq("sweet", "strawberry")
+    mapValue.varValue[String]('name).value shouldBe "hello"
+    mapValue.varValue[Int]('numCherries).value shouldBe 12
+    mapValue.varValue[Boolean]('inCone).value shouldBe true
+    mapValue.varsValue[String]('flavours).value shouldBe Seq("sweet", "strawberry")
 
 
   }

@@ -18,3 +18,6 @@ case class MapException(msg: String, override val cause: Option[Throwable] = Non
 
 case class EncoderException(msg: String, override val cause: Option[Throwable] = None)
   extends FormException
+
+case class DecoderException(msg: String, override val cause: Option[Throwable] = None)
+  extends FormException

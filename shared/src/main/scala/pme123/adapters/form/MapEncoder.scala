@@ -62,7 +62,7 @@ object MapEncoder {
                                                                , hEncoder: Lazy[MapEncoder[H]]
                                                                , tEncoder: MapObjectEncoder[T]
                                                              ): MapObjectEncoder[FieldType[K, H] :: T] = {
-    val fieldName = witness.value.name
+    val fieldName = witness.value
     pureObject { hlist =>
       val head: MapValue = hEncoder.value.encode(hlist.head)
       val tail: MapObject = tEncoder.encode(hlist.tail)

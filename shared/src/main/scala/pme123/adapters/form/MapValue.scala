@@ -20,6 +20,10 @@ sealed trait MapValue {
       }
     case other => throw MapException(s"This needs to be a MapObject (not: $other")
   }
+
+  def value[A]: A = throw MapException(s"There is no value defined for: $this")
+
+  def values[A]: List[A] = throw MapException(s"There are no values defined for: $this")
 }
 
 case class MapObject(fields: Map[ObjectKey, MapValue]) extends MapValue {
@@ -36,11 +40,16 @@ case class MapList[A](elems: Vars[A]) extends MapValue {
   def addValue(newValue: A) {
     elems.value += newValue
   }
+
+  override def values[B]: List[B] = elems.value.toList.asInstanceOf[List[B]]
+
 }
 
 sealed trait SimpleValue[A]
   extends MapValue {
   def elem: Var[A]
+
+  override def value[B]: B = elem.value.asInstanceOf[B]
 
   def setValue(newValue: A) {
     elem.value = newValue
